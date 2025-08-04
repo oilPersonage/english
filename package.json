@@ -1,0 +1,30 @@
+{
+	"name": "english",
+	"private": true,
+	"version": "0.0.0",
+	"type": "module",
+	"scripts": {
+		"dev": "vite --host",
+		"build": "vite build",
+		"preview": "vite preview",
+		"check": "svelte-check --tsconfig ./tsconfig.app.json && tsc -p tsconfig.node.json",
+		"deploy": "npm run build && gh-pages -d dist"
+	},
+	"devDependencies": {
+		"@sveltejs/vite-plugin-svelte": "^6.0.0",
+		"@tsconfig/svelte": "^5.0.4",
+		"gh-pages": "^6.3.0",
+		"svelte": "^5.35.5",
+		"svelte-check": "^4.2.2",
+		"typescript": "~5.8.3",
+		"vite": "^7.0.4"
+	},
+	"dependencies": {
+		"@tailwindcss/vite": "^4.1.11",
+		"animejs": "^4.1.2",
+		"idb": "^8.0.3",
+		"lodash.debounce": "^4.0.8",
+		"svelte-spa-router": "^4.0.1",
+		"tailwindcss": "^4.1.11"
+	}
+}

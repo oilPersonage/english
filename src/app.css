@@ -1,0 +1,63 @@
+@import "tailwindcss";
+
+@theme {
+	--color-bg: #f7f7f7;
+	--color-text: #242424;
+	--color-accent: #d94f04;
+	--color-accent2: #f29325;
+	--color-deep: #025259;
+	--color-deep2: #007172;
+}
+
+:root {
+	@apply text-text;
+	font-family: "Mozilla Text", "Fira Sans", system-ui, sans-serif, Avenir,
+		Helvetica, Arial;
+	line-height: 1.5;
+	font-weight: 400;
+
+	color-scheme: light dark;
+	background-color: #242424;
+
+	font-synthesis: none;
+	text-rendering: optimizeLegibility;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+html,
+body {
+	@apply h-[100svh] max-w-[100svw];
+}
+
+a {
+	@apply text-text;
+	font-weight: 500;
+	text-decoration: inherit;
+}
+a:hover {
+	@apply text-text;
+}
+
+body {
+	margin: 0;
+}
+
+h1 {
+	font-size: 3.2em;
+	line-height: 1.1;
+}
+
+input {
+	@apply outline-none;
+}
+input:focus-within {
+	@apply outline-none;
+}
+.card {
+	padding: 2em;
+}
+
+#app {
+	@apply h-full bg-bg;
+}
