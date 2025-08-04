@@ -1,13 +1,13 @@
 const CACHE_NAME = "local-pwa-cache-v1";
 const FILES_TO_CACHE = [
-	"/",
-	"/index.html",
-	"/manifest.json",
-	"/512.png",
-	"/192.png",
-	"/favicon.svg",
-	"/index.js",
-	"/index.css",
+	"/english/",
+	"/english/index.html",
+	"/english/manifest.json",
+	"/english/512.png",
+	"/english/192.png",
+	"/english/favicon.svg",
+	"/english/index.js",
+	"/english/index.css",
 ];
 
 self.addEventListener("install", (event) => {

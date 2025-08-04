@@ -1,18 +1,19 @@
 {
 	"name": "English oil",
 	"short_name": "Eng oil",
-	"start_url": "/",
+	"start_url": "/english/",
+	"scope": "/english/",
 	"display": "standalone",
 	"background_color": "#f7f7f7",
 	"theme_color": "#242424",
 	"icons": [
 		{
-			"src": "/192.png",
+			"src": "/english/192.png",
 			"type": "image/png",
 			"sizes": "192x192"
 		},
 		{
-			"src": "/512.png",
+			"src": "/english/512.png",
 			"type": "image/png",
 			"sizes": "512x512"
 		}
