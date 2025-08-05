@@ -12,11 +12,10 @@
 
 	function handleSelect() {
 		isActive = true;
-		console.log(isActive, label, 111);
 		let timeout = setTimeout(() => {
 			isActive = false;
 			clearTimeout(timeout);
-		}, 1500); // сброс активности через 1 секунду
+		}, 300); // сброс активности через 1 секунду
 		onClick(value);
 	}
 </script>
@@ -29,5 +28,5 @@
 	on:click={handleSelect}
 >
 	<p>{label}</p>
-	<span class="text-[10px] text-neutral-300 font-bold">{info}</span>
+	<span class="text-[10px] text-black/30 font-bold">{info}</span>
 </button>

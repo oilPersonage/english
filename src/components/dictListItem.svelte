@@ -51,7 +51,7 @@
 				height="20"
 				viewBox="0 0 24 24"
 				fill="none"
-				class={isStudy ? "stroke-accent" : "stroke-neutral-300"}
+				class={isStudy ? "stroke-accent" : "stroke-black/30"}
 				xmlns="http://www.w3.org/2000/svg"
 			>
 				<g id="Iconly/Curved/Heart">
@@ -81,7 +81,10 @@
 
 		{#if isStudy}
 			<div bind:this={iconsRef} class="h-full bg-bg absolute -right-12 pl-3">
-				<button on:click={() => handleDelete(id)} class="p-1 -my-1">
+				<button
+					on:click={() => handleDelete(id)}
+					class="p-1 -my-1 cursor-pointer"
+				>
 					<svg
 						width="20"
 						height="20"

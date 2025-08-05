@@ -1,7 +1,9 @@
 <script>
-	import Router from "svelte-spa-router";
+	import Router, { location } from "svelte-spa-router";
 	import Dictionary from "./routes/dictionary.svelte";
 	import Home from "./routes/home.svelte";
+
+	$: currentRoute = $location;
 
 	const routes = {
 		"/": Home,
@@ -9,10 +11,59 @@
 	};
 </script>
 
-<div class="flex flex-col max-h-svh h-full">
-	<nav class="flex justify-end *:px-3 *:py-3 mr-3">
-		<a href="#/">Главная</a>
-		<a href="#/dictionary">Словарь</a>
+<div class="flex flex-col max-h-svh h-full pt-5 pb-10">
+	<nav
+		class="absolute z-10 gap-1 bottom-10 *:rounded-lg *:bg-white left-5 flex justify-end *:px-3 *:py-3 mr-3"
+	>
+		<a href="#/">
+			<svg
+				width="24"
+				height="24"
+				viewBox="0 0 24 24"
+				fill="none"
+				class={`${currentRoute === "/" ? "fill-accent" : "fill-black/30"}`}
+				xmlns="http://www.w3.org/2000/svg"
+			>
+				<path
+					d="M17.1797 5.25C15.4697 5.25 13.4297 5.9 13.4297 9V15C13.4297 18.1 15.4697 18.75 17.1797 18.75C18.8897 18.75 20.9297 18.1 20.9297 15V9C20.9297 5.9 18.8897 5.25 17.1797 5.25Z"
+					fill="inherit"
+				/>
+				<path
+					d="M6.82031 5.25C5.11031 5.25 3.07031 5.9 3.07031 9V15C3.07031 18.1 5.11031 18.75 6.82031 18.75C8.53031 18.75 10.5703 18.1 10.5703 15V9C10.5703 5.9 8.53031 5.25 6.82031 5.25Z"
+					fill="inherit"
+				/>
+				<path d="M13.4303 11.25H10.5703V12.75H13.4303V11.25Z" fill="inherit" />
+				<path
+					d="M22.5 15.25C22.09 15.25 21.75 14.91 21.75 14.5V9.5C21.75 9.09 22.09 8.75 22.5 8.75C22.91 8.75 23.25 9.09 23.25 9.5V14.5C23.25 14.91 22.91 15.25 22.5 15.25Z"
+					fill="inherit"
+				/>
+				<path
+					d="M1.5 15.25C1.09 15.25 0.75 14.91 0.75 14.5V9.5C0.75 9.09 1.09 8.75 1.5 8.75C1.91 8.75 2.25 9.09 2.25 9.5V14.5C2.25 14.91 1.91 15.25 1.5 15.25Z"
+					fill="inherit"
+				/>
+			</svg>
+		</a>
+		<a href="#/dictionary">
+			<svg
+				width="24"
+				height="24"
+				viewBox="0 0 24 24"
+				fill="none"
+				class={`${
+					currentRoute === "/dictionary" ? "fill-accent" : "fill-black/30"
+				}`}
+				xmlns="http://www.w3.org/2000/svg"
+			>
+				<path
+					d="M22 4.85V16.74C22 17.71 21.21 18.6 20.24 18.72L19.93 18.76C18.29 18.98 15.98 19.66 14.12 20.44C13.47 20.71 12.75 20.22 12.75 19.51V5.6C12.75 5.23 12.96 4.89 13.29 4.71C15.12 3.72 17.89 2.84 19.77 2.68H19.83C21.03 2.68 22 3.65 22 4.85Z"
+					fill="inherit"
+				/>
+				<path
+					d="M10.7102 4.71C8.88023 3.72 6.11023 2.84 4.23023 2.68H4.16023C2.96023 2.68 1.99023 3.65 1.99023 4.85V16.74C1.99023 17.71 2.78023 18.6 3.75023 18.72L4.06023 18.76C5.70023 18.98 8.01023 19.66 9.87023 20.44C10.5202 20.71 11.2402 20.22 11.2402 19.51V5.6C11.2402 5.22 11.0402 4.89 10.7102 4.71ZM5.00023 7.74H7.25023C7.66023 7.74 8.00023 8.08 8.00023 8.49C8.00023 8.91 7.66023 9.24 7.25023 9.24H5.00023C4.59023 9.24 4.25023 8.91 4.25023 8.49C4.25023 8.08 4.59023 7.74 5.00023 7.74ZM8.00023 12.24H5.00023C4.59023 12.24 4.25023 11.91 4.25023 11.49C4.25023 11.08 4.59023 10.74 5.00023 10.74H8.00023C8.41023 10.74 8.75023 11.08 8.75023 11.49C8.75023 11.91 8.41023 12.24 8.00023 12.24Z"
+					fill="inherit"
+				/>
+			</svg>
+		</a>
 	</nav>
 	<Router {routes} />
 </div>

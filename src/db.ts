@@ -32,14 +32,33 @@ export async function getWordsForReview(limit = 50): Promise<TCard[]> {
 	const allWords = await db.getAll("words");
 
 	const now = new Date();
-
+	// console.log("NOW:", now.toISOString());
+	// for (const word of allWords) {
+	// 	console.log(
+	// 		"Word:",
+	// 		word.ru,
+	// 		"→ nextReview:",
+	// 		word.nextReview,
+	// 		"parsed:",
+	// 		new Date(word.nextReview).toISOString()
+	// 	);
+	// }
 	return allWords
 		.filter((word) => new Date(word.nextReview) <= now)
 		.sort((a, b) => {
 			if (a.level !== b.level) return a.level - b.level;
-			return (
-				new Date(a.nextReview).getTime() - new Date(b.nextReview).getTime()
-			);
+
+			// ⏱️ Округляем nextReview до минут
+			const timeA = Math.floor(new Date(a.nextReview).getTime() / (60 * 1000));
+			const timeB = Math.floor(new Date(b.nextReview).getTime() / (60 * 1000));
+
+			// 📉 Разница по минутам
+			const dateDiff = timeA - timeB;
+			// console.log(dateDiff, timeA, timeB);
+			if (dateDiff !== 0) return dateDiff;
+
+			// 🎲 Немного рандома, если всё совпадает
+			return Math.random() - 0.5;
 		})
 		.slice(0, limit);
 }
@@ -47,4 +66,9 @@ export async function getWordsForReview(limit = 50): Promise<TCard[]> {
 export async function deleteWord(id: number) {
 	const db = await dbPromise;
 	await db.delete("words", id);
+}
+
+export async function deleteAllWords(id: number) {
+	const db = await dbPromise;
+	await db.clear("words");
 }
