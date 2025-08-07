@@ -1,4 +1,4 @@
-const CACHE_NAME = "local-pwa-cache-v2";
+const CACHE_NAME = "local-pwa-cache-v3";
 const FILES_TO_CACHE = [
 	"/english/",
 	"/english/index.html",
