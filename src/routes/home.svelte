@@ -43,7 +43,9 @@
 	async function setAnimatedText() {
 		animeRu = null;
 		animeEn = null;
+
 		await tick();
+
 		if (!refRu || !refEn) return;
 		const { chars } = text.split(refRu, { words: false, chars: true });
 		const { chars: charsEn } = text.split(refEn, {
@@ -55,16 +57,18 @@
 			y: [{ to: "-32px" }],
 			rotate: { to: stagger("-.125turn") },
 			opacity: 0,
-			delay: stagger(50, { from: "random" }),
-			ease: "inOutCirc",
+			duartion: 100,
+			delay: stagger(25, { from: "random" }),
+			ease: "inOut(6)",
 			autoplay: false,
 		});
 		animeEn = animate(charsEn, {
 			y: [{ to: "-32px" }],
 			rotate: { from: stagger("-.125turn") },
 			opacity: 1,
-			delay: stagger(50, { from: "random" }),
-			ease: "inOutCirc",
+			duartion: 100,
+			delay: stagger(25, { from: "random" }),
+			ease: "inOut(6)",
 			autoplay: false,
 		});
 	}
@@ -190,7 +194,7 @@
 							onclick={handleShowTranslate}
 						>
 							<div
-								class="flex flex-col mb-20 max-h-6 text-[36px] font-bold w-full"
+								class="flex flex-col mb-20 max-h-6 text-[28px] font-bold w-full"
 							>
 								<div bind:this={refRu} class="relative">
 									{currentCard.ru}
