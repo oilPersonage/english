@@ -31,27 +31,27 @@
 			animateIcon();
 		}
 	});
-
-	// onMount(() => {
-	// 	if (!cardRef) return;
-	// 	// Initialize draggable functionality
-	// 	animate();
-	// });
 </script>
 
 <li bind:this={cardRef} class="flex items-start justify-between py-1 px-5">
 	<div class="flex gap-2">
 		<p>{item.ru}</p>
-		<p class="text-neutral-400">{item.en}</p>
+		<p class="text-black/40 dark:text-white/40">{item.en}</p>
 	</div>
-	<div class="flex items-center gap-0.5 relative bg-bg">
-		<button on:click={() => (id ? null : handleAdd(item))} class="p-1 -my-1">
+	<div class="flex items-center gap-0.5 relative bg-bg dark:bg-text">
+		<button
+			aria-label="add"
+			onclick={() => (id ? null : handleAdd(item))}
+			class="p-1 -my-1"
+		>
 			<svg
 				width="20"
 				height="20"
 				viewBox="0 0 24 24"
 				fill="none"
-				class={isStudy ? "stroke-accent" : "stroke-black/30"}
+				class={isStudy
+					? "stroke-accent"
+					: "stroke-black/30 dark:stroke-white/30"}
 				xmlns="http://www.w3.org/2000/svg"
 			>
 				<g id="Iconly/Curved/Heart">
@@ -80,9 +80,13 @@
 		</button>
 
 		{#if isStudy}
-			<div bind:this={iconsRef} class="h-full bg-bg absolute -right-12 pl-3">
+			<div
+				bind:this={iconsRef}
+				class="h-full bg-bg dark:bg-text absolute -right-12 pl-3"
+			>
 				<button
-					on:click={() => handleDelete(id)}
+					aria-label="remove"
+					onclick={() => handleDelete(id)}
 					class="p-1 -my-1 cursor-pointer"
 				>
 					<svg

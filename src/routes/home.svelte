@@ -1,5 +1,6 @@
 <script lang="ts">
-	import { onMount } from "svelte";
+	import { animate, JSAnimation, stagger, text } from "animejs";
+	import { onMount, tick } from "svelte";
 	import ReviewButton from "../components/reviewButton.svelte";
 	import { getWords, getWordsForReview, updateCard } from "../db";
 	import type { TCard } from "../types";
@@ -7,6 +8,11 @@
 	const maxLevel = 5; // максимальный уровень сложности
 	const reviewIntervals = [1, 10, 1440, 43200]; // в минутах
 	// [1 минута, 10 минут, 1 день, 30 дней]
+	let refRu: HTMLDivElement | null = $state(null);
+	let refEn: HTMLDivElement | null = $state(null);
+	let animeRu: JSAnimation | null = null;
+	let animeEn: JSAnimation | null = null;
+	let showTranslation = false;
 
 	let learned = $state(0);
 	let isDisabled = $state(false); // флаг для отключения кнопок во время ревью
@@ -14,11 +20,9 @@
 	let studyWords: TCard[] = $state([]); // слова для изучения, которые нужно ревьюить
 
 	let currentIndex = $state(0);
-	let showTranslation = $state(false); // переключатель для показа перевода
 
 	let completed = $derived(getTodayRepeatCount(studyWords, reviewIntervals));
-	let planned = $derived(getPlannedForToday(studyWords));
-	let progress = $derived(planned > 0 ? (completed / planned) * 100 : 0);
+	let planned = $state(0);
 
 	// currentCard теперь derived
 	let currentCard = $derived(
@@ -29,17 +33,59 @@
 			: studyWords[currentIndex]
 	);
 
+	async function loadMoreCards() {
+		studyWords = await getWordsForReview();
+		currentIndex = 0;
+		planned = getPlannedForToday(studyWords);
+		setAnimatedText();
+	}
+
+	async function setAnimatedText() {
+		animeRu = null;
+		animeEn = null;
+		await tick();
+		if (!refRu || !refEn) return;
+		const { chars } = text.split(refRu, { words: false, chars: true });
+		const { chars: charsEn } = text.split(refEn, {
+			words: false,
+			chars: true,
+		});
+
+		animeRu = animate(chars, {
+			y: [{ to: "-32px" }],
+			rotate: { to: stagger("-.125turn") },
+			opacity: 0,
+			delay: stagger(50, { from: "random" }),
+			ease: "inOutCirc",
+			autoplay: false,
+		});
+		animeEn = animate(charsEn, {
+			y: [{ to: "-32px" }],
+			rotate: { from: stagger("-.125turn") },
+			opacity: 1,
+			delay: stagger(50, { from: "random" }),
+			ease: "inOutCirc",
+			autoplay: false,
+		});
+	}
+
+	$effect(() => {
+		if (completed === studyWords.length) {
+			loadMoreCards();
+		}
+	});
+
 	onMount(async () => {
 		words = await getWords();
 		learned = words.filter((w) => w.learned).length;
-		studyWords = await getWordsForReview();
-		currentIndex = 0; // достаточно сбросить индекс
+		loadMoreCards();
 	});
 
 	function showNextCard() {
 		currentIndex += 1;
 		if (currentIndex < studyWords.length) {
 			currentCard = studyWords[currentIndex];
+			setAnimatedText();
 		} else {
 			currentCard = null;
 		}
@@ -90,6 +136,18 @@
 			clearTimeout(timeout);
 		}, 300); // задержка перед показом следующей карточки
 	}
+
+	function handleShowTranslate() {
+		if (!showTranslation) {
+			animeRu?.play();
+			animeEn?.play();
+		} else {
+			animeRu?.reverse();
+			animeEn?.reverse();
+		}
+
+		showTranslation = !showTranslation;
+	}
 </script>
 
 <div class="flex flex-col flex-1 px-5">
@@ -108,11 +166,17 @@
 			</div>
 			<div class=" text-[36px] leading-10 font-semibold mt-1">
 				<span class="text-accent -mr-2">{completed}</span>
-				<span class="relative text-black/20 text-[18px] bottom-0.5">/</span>
-				<span class="text-black/20 text-2xl -ml-2">{planned}</span>
+				<span
+					class="relative text-black/20 dark:text-white/20 text-[18px] bottom-0.5"
+				>
+					/
+				</span>
+				<span class="text-black/20 dark:text-white/20 text-2xl -ml-2">
+					{planned}
+				</span>
 			</div>
 		</div>
-		<p class="mt-2 text-sm text-neutral-400">
+		<p class="mt-2 text-sm text-black/40 dark:text-white/40">
 			Нажмите на карточку, что бы посмотреть перевод
 		</p>
 	</div>
@@ -120,21 +184,26 @@
 		<div class="flex flex-1">
 			{#if studyWords.length > 0}
 				{#if currentCard}
-					<div
-						class="flex flex-1 flex-col justify-center items-center h-full text-center gap-2"
-						on:click={() => (showTranslation = true)}
-					>
-						<div class="relative text-2xl font-bold w-full mb-20">
-							{currentCard.ru}
-							<p
-								class={`absolute w-full left-[50%] -translate-x-[50%] text-center top-full text-xl text-accent transition-opacity ${
-									showTranslation ? "opacity-100" : "opacity-0"
-								}`}
+					{#key currentCard?.id}
+						<button
+							class="flex flex-1 flex-col justify-center items-center h-full text-center gap-2"
+							onclick={handleShowTranslate}
+						>
+							<div
+								class="flex flex-col mb-20 max-h-6 text-[36px] font-bold w-full"
 							>
-								{currentCard.en}
-							</p>
-						</div>
-					</div>
+								<div bind:this={refRu} class="relative">
+									{currentCard.ru}
+								</div>
+								<div
+									bind:this={refEn}
+									class="text-center top-full text-accent *:opacity-0"
+								>
+									{currentCard.en}
+								</div>
+							</div>
+						</button>
+					{/key}
 				{:else}
 					<div class="flex w-full justify-center items-center text-center">
 						<p>Нет слов для изучения</p>

@@ -32,17 +32,6 @@ export async function getWordsForReview(limit = 50): Promise<TCard[]> {
 	const allWords = await db.getAll("words");
 
 	const now = new Date();
-	// console.log("NOW:", now.toISOString());
-	// for (const word of allWords) {
-	// 	console.log(
-	// 		"Word:",
-	// 		word.ru,
-	// 		"→ nextReview:",
-	// 		word.nextReview,
-	// 		"parsed:",
-	// 		new Date(word.nextReview).toISOString()
-	// 	);
-	// }
 	return allWords
 		.filter((word) => new Date(word.nextReview) <= now)
 		.sort((a, b) => {

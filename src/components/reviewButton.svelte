@@ -22,11 +22,14 @@
 
 <button
 	disabled={isDisabled}
-	class={`px-1 py-2 flex-1 items-center flex-col
-			justify-center flex rounded-lg transition-colors
-    ${isActive ? "bg-accent text-white" : "bg-white hover:bg-gray-400"}`}
-	on:click={handleSelect}
+	class={`px-1 py-2 flex-1 items-center flex-col hover:text-white
+			justify-center flex rounded-lg transition-colors ${isActive ? "bg-accent text-white dark:text-text" : "bg-white dark:bg-black hover:bg-accent"}`}
+	onclick={handleSelect}
 >
 	<p>{label}</p>
-	<span class="text-[10px] text-black/30 font-bold">{info}</span>
+	<span
+		class={`text-[10px] font-bold ${isActive ? "text-white" : "text-black/30 dark:text-white/30"} transition-colors`}
+	>
+		{info}
+	</span>
 </button>

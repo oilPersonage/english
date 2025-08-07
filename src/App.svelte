@@ -9,19 +9,31 @@
 		"/": Home,
 		"/dictionary": Dictionary,
 	};
+
+	if (
+		localStorage.theme === "dark" ||
+		(!("theme" in localStorage) &&
+			window.matchMedia("(prefers-color-scheme: dark)").matches)
+	) {
+		document.documentElement.classList.add("dark");
+	} else {
+		document.documentElement.classList.remove("dark");
+	}
 </script>
 
-<div class="flex flex-col max-h-svh h-full pt-5 pb-10">
+<div
+	class="flex flex-col max-h-svh h-full pt-5 pb-10 dark:bg-text dark:text-bg"
+>
 	<nav
-		class="absolute z-10 gap-1 bottom-10 *:rounded-lg *:bg-white left-5 flex justify-end *:px-3 *:py-3 mr-3"
+		class="absolute z-10 gap-1 bottom-10 *:rounded-lg *:bg-white dark:*:bg-black left-5 flex justify-end *:px-3 *:py-3 mr-3"
 	>
-		<a href="#/">
+		<a aria-label="link" href="#/">
 			<svg
 				width="24"
 				height="24"
 				viewBox="0 0 24 24"
 				fill="none"
-				class={`${currentRoute === "/" ? "fill-accent" : "fill-black/30"}`}
+				class={`${currentRoute === "/" ? "fill-accent" : "fill-black/10 dark:fill-white/30"} transition-colors`}
 				xmlns="http://www.w3.org/2000/svg"
 			>
 				<path
@@ -43,15 +55,13 @@
 				/>
 			</svg>
 		</a>
-		<a href="#/dictionary">
+		<a aria-label="link" href="#/dictionary">
 			<svg
 				width="24"
 				height="24"
 				viewBox="0 0 24 24"
 				fill="none"
-				class={`${
-					currentRoute === "/dictionary" ? "fill-accent" : "fill-black/30"
-				}`}
+				class={`${currentRoute === "/dictionary" ? "fill-accent" : "fill-black/10 dark:fill-white/30"} transition-colors`}
 				xmlns="http://www.w3.org/2000/svg"
 			>
 				<path

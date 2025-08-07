@@ -104,15 +104,15 @@
 				placeholder="Начните вводить"
 				bind:this={inputRef}
 				autofocus
-				class="pl-4 py-3 pr-9 w-full bg-white rounded-lg border-neutral px-5 border-accent"
+				class="pl-4 py-3 pr-9 w-full bg-white dark:bg-black rounded-lg border-neutral px-5 border-accent"
 			/>
-			<div class="absolute right-0 top-1 p-1.5" on:click={onReset}>
+			<div class="absolute right-0 top-1 p-1.5" onclick={onReset}>
 				<svg
 					width="24"
 					height="24"
 					viewBox="0 0 24 24"
 					fill="none"
-					class="fill-black/10"
+					class="fill-black/10 dark:fill-white/20"
 					xmlns="http://www.w3.org/2000/svg"
 				>
 					<path
@@ -125,8 +125,9 @@
 			</div>
 		</div>
 
-		<div
-			on:click={handleExact}
+		<button
+			aria-label="button"
+			onclick={handleExact}
 			class="flex items-center justify-center h-full w-9"
 		>
 			<svg
@@ -134,7 +135,7 @@
 				height="24"
 				viewBox="0 0 24 24"
 				fill="none"
-				class={isExact ? "fill-accent" : "fill-black/30"}
+				class={isExact ? "fill-accent" : "fill-black/30 dark:fill-white/30"}
 				xmlns="http://www.w3.org/2000/svg"
 			>
 				<path
@@ -146,35 +147,35 @@
 					fill="inherit"
 				/>
 			</svg>
-		</div>
+		</button>
 	</div>
 	<div
 		class="flex *:flex *:items-center font-bold *:justify-center gap-1 absolute right-5 -bottom-15"
 	>
-		<div
-			class="w-12 h-12 bg-white rounded-lg"
-			on:click={() => handleAddPackWords(10)}
+		<button
+			class="w-12 h-12 bg-white dark:bg-black rounded-lg"
+			onclick={() => handleAddPackWords(10)}
 		>
 			10
-		</div>
-		<div
-			class="w-12 h-12 bg-white rounded-lg"
-			on:click={() => handleAddPackWords(20)}
+		</button>
+		<button
+			class="w-12 h-12 bg-white dark:bg-black rounded-lg"
+			onclick={() => handleAddPackWords(20)}
 		>
 			20
-		</div>
-		<div
-			class="w-12 h-12 bg-white rounded-lg"
-			on:click={() => handleAddPackWords(35)}
+		</button>
+		<button
+			class="w-12 h-12 bg-white dark:bg-black rounded-lg"
+			onclick={() => handleAddPackWords(35)}
 		>
 			35
-		</div>
-		<div
-			class="w-12 h-12 bg-white rounded-lg"
-			on:click={() => handleAddPackWords(50)}
+		</button>
+		<button
+			class="w-12 h-12 bg-white dark:bg-black rounded-lg"
+			onclick={() => handleAddPackWords(50)}
 		>
 			50
-		</div>
+		</button>
 		{#if showNotification}
 			<div
 				class="absolute right-0 bottom-full mb-2 text-accent bg-white rounded-md py-2 px-5"
