@@ -20,29 +20,17 @@
 	let studyWords: TCard[] = $state([]); // слова для изучения, которые нужно ревьюить
 
 	let currentIndex = $state(0);
+	let currentCard = $derived(studyWords[currentIndex] ?? null);
+	let nextIndex = $derived(currentIndex + 1);
+	let nextCard = $derived(studyWords[nextIndex] ?? null);
 
 	let completed = $derived(getTodayRepeatCount(studyWords, reviewIntervals));
 	let planned = $state(0);
 
-	// currentCard теперь derived
-	let currentCard = $derived(
-		studyWords.length === 0 ||
-			currentIndex >= studyWords.length ||
-			completed === studyWords.length
-			? null
-			: studyWords[currentIndex]
-	);
-
-	async function loadMoreCards() {
-		studyWords = await getWordsForReview();
-		currentIndex = 0;
-		planned = getPlannedForToday(studyWords);
-		setAnimatedText();
-	}
-
 	async function setAnimatedText() {
-		animeRu = null;
-		animeEn = null;
+		if (!refEn || !refRu) return;
+		refRu.textContent = currentCard?.ru;
+		refEn.textContent = currentCard?.en;
 
 		await tick();
 
@@ -73,6 +61,13 @@
 		});
 	}
 
+	async function loadMoreCards() {
+		studyWords = await getWordsForReview();
+		currentIndex = 0;
+		planned = getPlannedForToday(studyWords);
+		setAnimatedText();
+	}
+
 	$effect(() => {
 		if (completed === studyWords.length) {
 			loadMoreCards();
@@ -87,12 +82,7 @@
 
 	function showNextCard() {
 		currentIndex += 1;
-		if (currentIndex < studyWords.length) {
-			currentCard = studyWords[currentIndex];
-			setAnimatedText();
-		} else {
-			currentCard = null;
-		}
+		setAnimatedText();
 	}
 
 	function handleReview(rating: "again" | "hard" | "good" | "easy") {
@@ -187,32 +177,19 @@
 	<div class="relative flex flex-1 flex-col text-sm">
 		<div class="flex flex-1">
 			{#if studyWords.length > 0}
-				{#if currentCard}
-					{#key currentCard?.id}
-						<button
-							class="flex flex-1 flex-col justify-center items-center h-full text-center gap-2"
-							onclick={handleShowTranslate}
-						>
-							<div
-								class="flex flex-col mb-20 max-h-6 text-[28px] font-bold w-full"
-							>
-								<div bind:this={refRu} class="relative">
-									{currentCard.ru}
-								</div>
-								<div
-									bind:this={refEn}
-									class="text-center top-full text-accent *:opacity-0"
-								>
-									{currentCard.en}
-								</div>
-							</div>
-						</button>
-					{/key}
-				{:else}
-					<div class="flex w-full justify-center items-center text-center">
-						<p>Нет слов для изучения</p>
+				<button
+					aria-label="translate btn"
+					class="flex flex-1 flex-col justify-center items-center h-full text-center gap-2"
+					onclick={handleShowTranslate}
+				>
+					<div class="flex flex-col mb-20 max-h-6 text-[28px] font-bold w-full">
+						<div bind:this={refRu} class="relative"></div>
+						<div
+							bind:this={refEn}
+							class="text-center top-full text-accent *:opacity-0"
+						></div>
 					</div>
-				{/if}
+				</button>
 			{:else}
 				<div class="flex w-full justify-center items-center text-center">
 					<p>Нет слов для изучения</p>
